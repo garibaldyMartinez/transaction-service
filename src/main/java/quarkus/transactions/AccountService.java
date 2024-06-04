@@ -14,7 +14,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/accounts")
-@RegisterRestClient(configKey  = "accounts-service", baseUri = "http://account-service:80")
+@RegisterRestClient(configKey = "accounts-service")
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountService {
 
@@ -23,7 +23,7 @@ public interface AccountService {
     BigDecimal getBalance(@PathParam("acctNumber") Long accountNumber);
 
     @POST
-    @Path("/{AccountNumber}/transaction")
-    Map<String, List<String>> transact(@PathParam("AccountNumber") Long accountNumber, BigDecimal amount);
+    @Path("/{accountNumber}/transaction")
+    Map<String, List<String>> transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
 
 }
