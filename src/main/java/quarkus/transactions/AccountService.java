@@ -3,6 +3,7 @@ package quarkus.transactions;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletionStage;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -25,5 +26,9 @@ public interface AccountService {
     @POST
     @Path("/{accountNumber}/transaction")
     Map<String, List<String>> transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
+
+    @POST
+    @Path("/{accountNumber}/trancation")
+    CompletionStage<Void> transactAsync(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
 
 }

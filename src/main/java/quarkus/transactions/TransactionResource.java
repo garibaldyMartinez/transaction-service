@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -49,14 +49,13 @@ public class TransactionResource {
 		}
 	}
 
-	// @POST
-	// @Path("/async/{acctNumber}")
-	// public CompletionStage<Map<String, List<String>>>
-	// newTransactionAsync(@PathParam("acctNumber") Long accountNumber,
-	// BigDecimal amount) {
-	// return accountService.transactAsync(accountNumber, amount);
-	// }
-	//
+	@POST
+	@Path("/async/{acctNumber}")
+	public CompletionStage<Void> newTransactionAsync(@PathParam("acctNumber") Long accountNumber,
+			BigDecimal amount) {
+		return accountService.transactAsync(accountNumber, amount);
+	}
+
 	@POST
 	@Path("/api/{acctNumber}")
 	public Response newTransactionWithApi(@PathParam("acctNumber") Long accountNumber, BigDecimal amount)
@@ -71,16 +70,16 @@ public class TransactionResource {
 		acctService.transact(accountNumber, amount);
 		return Response.ok().build();
 	}
-	//
-	// @POST
-	// @Path("/api/async/{acctNumber}")
-	// public CompletionStage<Void>
-	// newTransactionWithApiAsync(@PathParam("acctNumber") Long accountNumber,
-	// BigDecimal amount) throws MalformedURLException {
-	// AccountServiceProgrammatic acctService =
-	// RestClientBuilder.newBuilder().baseUrl(new URL(accountServiceUrl))
-	// .build(AccountServiceProgrammatic.class);
-	//
-	// return acctService.transactAsync(accountNumber, amount);
-	// }
+
+	@POST
+	@Path("/api/async/{acctNumber}")
+	public CompletionStage<Void> newTransactionWithApiAsync(@PathParam("acctNumber") Long accountNumber,
+			BigDecimal amount) throws MalformedURLException, URISyntaxException {
+		URI uri = new URI(accountServiceUrl);
+		AccountServiceProgrammatic acctService = RestClientBuilder.newBuilder()
+				.baseUrl(uri.toURL())
+				.build(AccountServiceProgrammatic.class);
+
+		return acctService.transactAsync(accountNumber, amount);
+	}
 }
