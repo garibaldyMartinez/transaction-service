@@ -21,12 +21,10 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class TransactionResource {
+	
 	@Inject
 	@RestClient
 	AccountService accountService;
-
-	@ConfigProperty(name = "account.service", defaultValue = "http://localhost:8080")
-	String accountServiceUrl;
 
 	@POST
 	@Path("/{acctNumber}")

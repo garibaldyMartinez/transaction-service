@@ -40,8 +40,6 @@
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-rest</artifactId>
 		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/io.quarkus/quarkus-rest-client-reactive-jackson -->
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-rest-client-jackson</artifactId>
@@ -55,9 +53,9 @@
 			<artifactId>quarkus-rest-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.quarkiverse.opentracing</groupId>
-			<artifactId>quarkus-smallrye-opentracing</artifactId>
-			<version>1.0.0</version>
+			<groupId>com.squareup.okio</groupId>
+			<artifactId>okio</artifactId>
+			<version>3.9.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
@@ -81,14 +79,12 @@
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.wiremock/wiremock -->
 		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock</artifactId>
 			<version>3.6.0</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
