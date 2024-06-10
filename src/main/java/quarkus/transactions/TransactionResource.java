@@ -41,8 +41,8 @@ public class TransactionResource {
 	public Map<String, List<String>> newTransaction(@PathParam("acctNumber") Long accountNumber, BigDecimal amount) {
 		try {
 			return accountService.transact(accountNumber, amount);
-		} catch (Throwable t) {
-			t.printStackTrace();
+		} catch (Exception t) {
+			// TODO: Log exception details
 			Map<String, List<String>> response = new HashMap<>();
 			response.put("EXCEPTION - " + t.getClass(), Collections.singletonList(t.getMessage()));
 			return response;

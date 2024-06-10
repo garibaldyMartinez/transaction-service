@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
+import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
+import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import jakarta.ws.rs.GET;
@@ -15,7 +17,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/accounts")
-@RegisterRestClient(configKey = "accounts-service")
+@RegisterRestClient
+@ClientHeaderParam(name = "class-level-param", value = "AccountServiceinterface")
+@RegisterClientHeaders
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountService {
 
@@ -29,6 +33,11 @@ public interface AccountService {
 
     @POST
     @Path("/{accountNumber}/trancation")
+    @ClientHeaderParam(name = "method-level-param", value = "{generateValue}")
     CompletionStage<Void> transactAsync(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
+
+    default String generateValue() {
+        return "Value generated in method for asunc call";
+    }
 
 }
