@@ -18,7 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("/accounts")
 @RegisterRestClient
-@ClientHeaderParam(name = "class-level-param", value = "AccountServiceinterface")
+@ClientHeaderParam(name = "class-level-param", value = "AccountService-interface")
 @RegisterClientHeaders
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountService {
@@ -28,16 +28,18 @@ public interface AccountService {
     BigDecimal getBalance(@PathParam("acctNumber") Long accountNumber);
 
     @POST
-    @Path("/{accountNumber}/transaction")
-    Map<String, List<String>> transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
+    @Path("{accountNumber}/transaction")
+    Map<String, List<String>> transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount)
+            throws AccountNotFoundException;
 
     @POST
-    @Path("/{accountNumber}/trancation")
+    @Path("{accountNumber}/transaction")
     @ClientHeaderParam(name = "method-level-param", value = "{generateValue}")
-    CompletionStage<Void> transactAsync(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
+    CompletionStage<Map<String, List<String>>> transactAsync(@PathParam("accountNumber") Long accountNumber,
+            BigDecimal amount);
 
     default String generateValue() {
-        return "Value generated in method for asunc call";
+        return "Value generated in method for async call";
     }
 
 }

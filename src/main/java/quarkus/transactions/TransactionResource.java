@@ -42,7 +42,6 @@ public class TransactionResource {
 		try {
 			return accountService.transact(accountNumber, amount);
 		} catch (Exception t) {
-			// TODO: Log exception details
 			Map<String, List<String>> response = new HashMap<>();
 			response.put("EXCEPTION - " + t.getClass(), Collections.singletonList(t.getMessage()));
 			return response;
@@ -51,7 +50,7 @@ public class TransactionResource {
 
 	@POST
 	@Path("/async/{acctNumber}")
-	public CompletionStage<Void> newTransactionAsync(@PathParam("acctNumber") Long accountNumber,
+	public CompletionStage<Map<String, List<String>>> newTransactionAsync(@PathParam("acctNumber") Long accountNumber,
 			BigDecimal amount) {
 		return accountService.transactAsync(accountNumber, amount);
 	}
