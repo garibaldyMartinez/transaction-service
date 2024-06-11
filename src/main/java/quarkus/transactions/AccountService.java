@@ -7,6 +7,7 @@ import java.util.concurrent.CompletionStage;
 
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import jakarta.ws.rs.GET;
@@ -20,6 +21,7 @@ import jakarta.ws.rs.core.MediaType;
 @RegisterRestClient
 @ClientHeaderParam(name = "class-level-param", value = "AccountService-interface")
 @RegisterClientHeaders
+@RegisterProvider(AccountRequestFilter.class)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountService {
 
