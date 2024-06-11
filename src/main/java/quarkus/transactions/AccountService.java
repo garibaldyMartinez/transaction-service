@@ -22,6 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 @ClientHeaderParam(name = "class-level-param", value = "AccountService-interface")
 @RegisterClientHeaders
 @RegisterProvider(AccountRequestFilter.class)
+@RegisterProvider(AccountNotFoundException.class)
 @Produces(MediaType.APPLICATION_JSON)
 public interface AccountService {
 
