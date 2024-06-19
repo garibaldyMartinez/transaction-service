@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 public interface AccountServiceProgrammatic {
 
     @GET
-    @Path("/{acctNuember}/balance")
+    @Path("/{accountNumber}/balance")
     BigDecimal getBalance(@PathParam("acctNumber") Long accountNumber);
 
     @POST
