@@ -15,15 +15,15 @@ import jakarta.ws.rs.core.MediaType;
 public interface AccountServiceProgrammatic {
 
     @GET
-    @Path("/{accountNumber}/balance")
+    @Path("{accountNumber}/balance")
     BigDecimal getBalance(@PathParam("acctNumber") Long accountNumber);
 
     @POST
-    @Path("/{accountNumber}/transaction")
+    @Path("{accountNumber}/transaction")
     void transact(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
 
     @POST
-    @Path("/{accountNumber}/transaction")
+    @Path("{accountNumber}/transaction")
     CompletionStage<Void> transactAsync(@PathParam("accountNumber") Long accountNumber, BigDecimal amount);
 
 }

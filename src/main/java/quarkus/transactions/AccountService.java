@@ -16,7 +16,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
+  
 @Path("/accounts")
 @RegisterRestClient
 @ClientHeaderParam(name = "class-level-param", value = "AccountService-interface")
@@ -27,7 +27,7 @@ import jakarta.ws.rs.core.MediaType;
 public interface AccountService {
 
     @GET
-    @Path("/{acctNumber}/balance")
+    @Path("{acctNumber}/balance")
     BigDecimal getBalance(@PathParam("acctNumber") Long accountNumber);
   
     @POST
