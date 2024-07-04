@@ -12,6 +12,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -86,6 +87,7 @@ public CompletionStage<Map<String, List<String>>> newTransactionAsync(@PathParam
  */
 @POST
 @Path("/api/{acctNumber}")
+@Bulkhead(1)
 public Response newTransactionWithApi(@PathParam("acctNumber") Long accountNumber, BigDecimal amount)
         throws MalformedURLException, URISyntaxException {
     URI uri = new URI(accountServiceUrl);
