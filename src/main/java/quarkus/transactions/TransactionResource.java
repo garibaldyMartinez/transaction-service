@@ -13,11 +13,15 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.eclipse.microprofile.faulttolerance.exceptions.BulkheadException;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -88,6 +92,10 @@ public CompletionStage<Map<String, List<String>>> newTransactionAsync(@PathParam
 @POST
 @Path("/api/{acctNumber}")
 @Bulkhead(1)
+@Fallback(
+    fallbackMethod = "bulkheadFallbackGetBalance", 
+           applyOn = {BulkheadException.class}
+)
 public Response newTransactionWithApi(@PathParam("acctNumber") Long accountNumber, BigDecimal amount)
         throws MalformedURLException, URISyntaxException {
     URI uri = new URI(accountServiceUrl);
@@ -99,6 +107,10 @@ public Response newTransactionWithApi(@PathParam("acctNumber") Long accountNumbe
 
     acctService.transact(accountNumber, amount);
     return Response.ok().build();
+}
+
+public Response bulkheadFallbackGetBalance(Long accountNumber, BigDecimal amount) {
+    return  Response.status(Response.Status.TOO_MANY_REQUESTS).build(); 
 }
 
 /**
@@ -120,4 +132,19 @@ public CompletionStage<Void> newTransactionWithApiAsync(@PathParam("acctNumber")
 
     return acctService.transactAsync(accountNumber, amount);
 }
+
+@GET
+@Path("/{acctnumber}/balance")
+@Timeout(100)
+@Fallback(fallbackMethod = "timeoutFallbackGetBalance")
+@Produces(MediaType.APPLICATION_JSON)
+public Response getBalance(@PathParam("acctnumber") Long accountNumber){
+    String balance = accountService.getBalance(accountNumber).toString();
+    return Response.ok(balance).build();
+}
+
+public Response timeoutFallbackGetBalance(Long accountNumber) {
+    return Response.status(Response.Status.GATEWAY_TIMEOUT).build();
+  }
+
 }
